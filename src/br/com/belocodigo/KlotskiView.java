@@ -1,6 +1,5 @@
 package br.com.belocodigo;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import br.com.belocodigo.view.Bloco;
@@ -80,6 +79,7 @@ public class KlotskiView extends ViewGroup {
 		}
 
 		blocos.put(tipo, bloco);
+
 		addView(bloco);
 
 		return bloco;
@@ -109,43 +109,22 @@ public class KlotskiView extends ViewGroup {
 		int countChilds = getChildCount();
 		int x;
 		int y;
-		int larguraAltura[];
-		Integer xyPosicaoInicial[];
-		ArrayList<Integer[]> desenharPosicao;
+		int width;
+		int height;
+		DesenharPosicoes desenharPosicao;
 		Bloco bloco;
 
 		for (int i = 0; i < countChilds; i++) {
 			bloco = (Bloco) getChildAt(i);
 			desenharPosicao = bloco.getPosicoes();
 
-			xyPosicaoInicial = desenharPosicao.get(0);
+			x = desenharPosicao.getPrimeiraColuna() * measuredWidth;
+			y = desenharPosicao.getPrimeiraLinha() * measuredHeight;
 
-			x = xyPosicaoInicial[0] * measuredWidth;
-			y = xyPosicaoInicial[1] * measuredHeight;
-			larguraAltura = obterLarguraAltura(desenharPosicao);
-			bloco.layout(x, y, x + larguraAltura[0], y + larguraAltura[1]);
+			width = desenharPosicao.getTotalColunas() * measuredWidth;
+			height = desenharPosicao.getTotalLinhas() * measuredHeight;
+			bloco.layout(x, y, x + width, y + height);
 		}
-	}
-
-	private int[] obterLarguraAltura(ArrayList<Integer[]> desenharPosicao) {
-		ArrayList<Integer> posicaoAnteriorX = new ArrayList<Integer>();
-		ArrayList<Integer> posicaoAnteriorY = new ArrayList<Integer>();
-		int width = 0;
-		int height = 0;
-		for (Integer posicao[] : desenharPosicao) {
-			if (!posicaoAnteriorX.contains(posicao[0])) {
-				width += measuredWidth;
-			}
-			if (!posicaoAnteriorY.contains(posicao[1])) {
-				height += measuredHeight;
-			}
-
-			posicaoAnteriorX.add(posicao[0]);
-			posicaoAnteriorY.add(posicao[1]);
-		}
-
-		int retorno[] = { width, height };
-		return retorno;
 	}
 
 	@Override
