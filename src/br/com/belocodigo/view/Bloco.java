@@ -51,12 +51,6 @@ public class Bloco extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		// desenharBlocos();
-		// desenharBordas();
-		// desenharBlocos2(canvas);
-		// desenho.draw(canvas);
-
-		System.out.println("l:" + getLeft() + " r:" + getRight());
 		canvas.drawPath(getPath(), paintBlocos());
 	}
 

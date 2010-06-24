@@ -16,8 +16,8 @@ public class OnTouch implements OnTouchListener {
 		if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			int x = (int) event.getRawX() - diferencaX;
 			int y = (int) event.getRawY() - diferencaY;
-
 			v.layout(x, y, x + v.getWidth(), y + v.getHeight());
+
 		} else if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			diferencaX = (int) event.getRawX() - v.getLeft();
 			diferencaY = (int) event.getRawY() - v.getTop();
