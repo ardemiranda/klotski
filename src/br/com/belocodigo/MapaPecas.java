@@ -43,7 +43,6 @@ public class MapaPecas {
 	}
 
 	public void put(Peca peca) {
-		System.out.println("setatipopeca: " + peca.getTipoPeca());
 		pecas.put(peca.getTipoPeca(), peca);
 	}
 
@@ -114,10 +113,6 @@ public class MapaPecas {
 							tipoPecasBloqueados.put(tipoPecaArmazenada, 0);
 						}
 
-						System.out.println("igual movimentar: "
-								+ pecaMovimentar.getTipoPeca()
-								+ " armazenada: "
-								+ pecaArmazenada.getTipoPeca());
 						coordenadasBloqueadas++;
 					}
 				}
