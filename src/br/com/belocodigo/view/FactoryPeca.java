@@ -16,25 +16,21 @@
  * 
  */
 
-package br.com.belocodigo;
+package br.com.belocodigo.view;
 
-import br.com.belocodigo.view.KlotskiView;
 import android.app.Activity;
-import android.os.Bundle;
 
-public class KlotskiActivity extends Activity {
+public class FactoryPeca {
 
-	/** Called when the activity is first created. */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public static Peca criar(Activity context, char tipo) {
+		TipoPeca tipoPeca = TipoPeca.find(tipo);
+		if (tipoPeca == null) {
+			return null;
+		}
 
-		QuebraCabecas quebraCabecas = QuebraCabecas.getInstance();
-		quebraCabecas.carregarQuebraCebeca(0);
-
-		KlotskiView klotskiView = new KlotskiView(this, quebraCabecas
-				.getQuebraCabeca());
-
-		setContentView(klotskiView);
+		Peca peca = new Peca(context, tipo);
+		tipoPeca.executar(peca);
+		return peca;
 	}
+
 }

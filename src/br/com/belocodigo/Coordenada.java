@@ -18,23 +18,33 @@
 
 package br.com.belocodigo;
 
-import br.com.belocodigo.view.KlotskiView;
-import android.app.Activity;
-import android.os.Bundle;
+public class Coordenada {
+	private int x;
+	private int y;
 
-public class KlotskiActivity extends Activity {
+	public Coordenada(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
 
-	/** Called when the activity is first created. */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public int getX() {
+		return x;
+	}
 
-		QuebraCabecas quebraCabecas = QuebraCabecas.getInstance();
-		quebraCabecas.carregarQuebraCebeca(0);
+	public int getY() {
+		return y;
+	}
 
-		KlotskiView klotskiView = new KlotskiView(this, quebraCabecas
-				.getQuebraCabeca());
+	public void alterar(int diferencaLeft, int diferencaTop) {
+		this.x += diferencaLeft;
+		this.y += diferencaTop;
+	}
 
-		setContentView(klotskiView);
+	public boolean equals(Coordenada b) {
+		if (x != b.getX() || y != b.getY()) {
+			return false;
+		}
+
+		return true;
 	}
 }

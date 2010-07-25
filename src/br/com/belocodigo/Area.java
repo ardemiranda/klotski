@@ -18,23 +18,21 @@
 
 package br.com.belocodigo;
 
-import br.com.belocodigo.view.KlotskiView;
-import android.app.Activity;
-import android.os.Bundle;
+public class Area {
 
-public class KlotskiActivity extends Activity {
+	int coluna;
+	int linha;
 
-	/** Called when the activity is first created. */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public Area(int coluna, int linha) {
+		this.coluna = coluna;
+		this.linha = linha;
+	}
 
-		QuebraCabecas quebraCabecas = QuebraCabecas.getInstance();
-		quebraCabecas.carregarQuebraCebeca(0);
+	public int getColuna() {
+		return coluna;
+	}
 
-		KlotskiView klotskiView = new KlotskiView(this, quebraCabecas
-				.getQuebraCabeca());
-
-		setContentView(klotskiView);
+	public int getLinha() {
+		return linha;
 	}
 }

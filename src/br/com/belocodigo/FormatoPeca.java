@@ -1,3 +1,21 @@
+/*
+ * Copyright 2010-2010 André Ribeiro de Miranda
+ * 
+ * Klotski is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * Klotski is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Less General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Less General Public License
+ * along with Klotski.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ */
+
 package br.com.belocodigo;
 
 import java.util.Collection;
@@ -5,19 +23,18 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class DesenharPosicoes implements Iterator<DesenharPosicao> {
+public class FormatoPeca implements Iterator<Area> {
 
-	int posicaoLinha = 0;
-	int posicaoColuna = 0;
-	boolean hasNext = true;
-	DesenharPosicao posicaoAtual;
+	private TreeMap<Integer, TreeMap<Integer, Integer>> linhas;
 
-	TreeMap<Integer, TreeMap<Integer, Integer>> linhas;
-	Set<Integer> keys;
+	// iterator
+	private int posicaoLinha = 0;
+	private int posicaoColuna = 0;
+	private boolean hasNext = true;
+	private Area posicaoAtual;
 
-	public DesenharPosicoes() {
+	public FormatoPeca() {
 		linhas = new TreeMap<Integer, TreeMap<Integer, Integer>>();
-		keys = linhas.keySet();
 	}
 
 	public void add(int coluna, int linha) {
@@ -75,7 +92,7 @@ public class DesenharPosicoes implements Iterator<DesenharPosicao> {
 				.getLinha());
 	}
 
-	public boolean temVizinhoBootom() {
+	public boolean temVizinhoBottom() {
 		return contemPosicao(posicaoAtual.getColuna(),
 				posicaoAtual.getLinha() + 1);
 	}
@@ -94,10 +111,10 @@ public class DesenharPosicoes implements Iterator<DesenharPosicao> {
 	}
 
 	@Override
-	public DesenharPosicao next() {
+	public Area next() {
 		boolean foiEncontradoProximaColuna = false;
 		boolean foiEncontradoProximaLinha = false;
-		posicaoAtual = new DesenharPosicao(posicaoColuna, posicaoLinha);
+		posicaoAtual = new Area(posicaoColuna, posicaoLinha);
 
 		foiEncontradoProximaColuna = proximaColuna();
 
@@ -133,6 +150,7 @@ public class DesenharPosicoes implements Iterator<DesenharPosicao> {
 				return true;
 			}
 		}
+
 		return false;
 	}
 

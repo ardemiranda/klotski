@@ -1,13 +1,26 @@
-package br.com.belocodigo;
+/*
+ * Copyright 2010-2010 André Ribeiro de Miranda
+ * 
+ * Klotski is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * Klotski is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Less General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Less General Public License
+ * along with Klotski.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ */
 
-import java.util.HashMap;
+package br.com.belocodigo.view;
 
-import br.com.belocodigo.view.Bloco;
-import br.com.belocodigo.view.Encache;
-import br.com.belocodigo.view.Parede;
-import br.com.belocodigo.view.Passante;
-import br.com.belocodigo.view.Portao;
-import br.com.belocodigo.view.Preso;
+import br.com.belocodigo.FormatoPeca;
+import br.com.belocodigo.MapaPecas;
+import br.com.belocodigo.QuebraCabeca;
 import android.app.Activity;
 import android.graphics.Canvas;
 import android.view.ViewGroup;
@@ -16,7 +29,7 @@ public class KlotskiView extends ViewGroup {
 
 	private QuebraCabeca quebraCabeca;
 	private Activity context;
-	private HashMap<Character, Bloco> blocos;
+	private MapaPecas pecas;
 
 	private int measuredWidth;
 	private int measuredHeight;
@@ -24,7 +37,7 @@ public class KlotskiView extends ViewGroup {
 	public KlotskiView(Activity context, QuebraCabeca quebraCabeca) {
 		super(context);
 
-		blocos = new HashMap<Character, Bloco>();
+		pecas = MapaPecas.getInstance();
 		this.context = context;
 		this.quebraCabeca = quebraCabeca;
 		setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
@@ -34,55 +47,30 @@ public class KlotskiView extends ViewGroup {
 
 	private void tabuleiro() {
 		char linhas[];
-		Bloco bloco;
+		Peca peca;
 		int quantidadeColunas = quebraCabeca.getWidth();
 		int quantidadeLinhas = quebraCabeca.getHeight();
 
 		for (int i = 0; i < quantidadeLinhas; i++) {
 			linhas = quebraCabeca.getLinha(i);
 			for (int j = 0; j < quantidadeColunas; j++) {
-				bloco = getBloco(linhas[j]);
-				bloco.desenharPosicao(j, i);
+				if (linhas[j] != ' ') {
+					peca = getBloco(linhas[j]);
+					peca.desenharPosicao(j, i);
+				}
 			}
 		}
 	}
 
-	private Bloco getBloco(char tipo) {
-		Bloco bloco;
-
-		if (blocos.containsKey(tipo)) {
-			return blocos.get(tipo);
+	private Peca getBloco(char tipo) {
+		if (pecas.containsKey(tipo)) {
+			return pecas.get(tipo);
 		}
 
-		switch (tipo) {
-		case '#':
-			bloco = new Parede(context);
-			break;
-		case ' ':
-			bloco = new Bloco(context);
-			break;
-		case '.':
-			bloco = new Encache(context);
-			break;
-		case '*':
-			bloco = new Passante(context);
-			break;
-		case '-':
-			bloco = new Portao(context);
-			break;
-		default:
-			bloco = new Preso(context);
-		}
-
-		if (tipo != '#' && tipo != '-' && tipo != '.') {
-			bloco.setOnTouchListener(new OnTouch());
-		}
-
-		blocos.put(tipo, bloco);
-
-		addView(bloco);
-
-		return bloco;
+		Peca peca = FactoryPeca.criar(context, tipo);
+		pecas.put(peca);
+		addView(peca);
+		return peca;
 	}
 
 	@Override
@@ -111,19 +99,19 @@ public class KlotskiView extends ViewGroup {
 		int y;
 		int width;
 		int height;
-		DesenharPosicoes desenharPosicao;
-		Bloco bloco;
+		FormatoPeca desenharPosicao;
+		Peca peca;
 
 		for (int i = 0; i < countChilds; i++) {
-			bloco = (Bloco) getChildAt(i);
-			desenharPosicao = bloco.getPosicoes();
+			peca = (Peca) getChildAt(i);
+			desenharPosicao = peca.getPosicoes();
 
 			x = desenharPosicao.getPrimeiraColuna() * measuredWidth;
 			y = desenharPosicao.getPrimeiraLinha() * measuredHeight;
 
 			width = desenharPosicao.getTotalColunas() * measuredWidth;
 			height = desenharPosicao.getTotalLinhas() * measuredHeight;
-			bloco.layout(x, y, x + width, y + height);
+			peca.layout(x, y, x + width, y + height);
 		}
 	}
 
